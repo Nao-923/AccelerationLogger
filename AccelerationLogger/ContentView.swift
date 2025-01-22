@@ -17,80 +17,75 @@ struct ContentView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Group {
                     Text("生データ(単位変換済)").font(.headline)
-                    accData(label: "x軸", value: motionManager.accelerationData["x"] ?? 0.0, color: .red)
-                    accData(label: "y軸", value: motionManager.accelerationData["y"] ?? 0.0, color: .green)
-                    accData(label: "z軸", value: motionManager.accelerationData["z"] ?? 0.0, color: .blue)
-                    velocityData(label: "x軸_速度", value: motionManager.velocity["x"] ?? 0.0, color: .red)
-                    velocityData(label: "y軸_速度", value: motionManager.velocity["y"] ?? 0.0, color: .green)
-                    velocityData(label: "z軸_速度", value: motionManager.velocity["z"] ?? 0.0, color: .blue)
-                    distanceData(label: "x軸_距離", value: motionManager.distance["x"] ?? 0.0, color: .red)
-                    distanceData(label: "y軸_距離", value: motionManager.distance["y"] ?? 0.0, color: .green)
-                    distanceData(label: "z軸_距離", value: motionManager.distance["z"] ?? 0.0, color: .blue)
+                    accData(label: "x軸", value: motionManager.rawAccelerometerData["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.rawAccelerometerData["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.rawAccelerometerData["z"] ?? 0.0, color: .blue)
+//                    velocityData(label: "x軸_速度", value: motionManager.velocity["x"] ?? 0.0, color: .red)
+//                    velocityData(label: "y軸_速度", value: motionManager.velocity["y"] ?? 0.0, color: .green)
+//                    velocityData(label: "z軸_速度", value: motionManager.velocity["z"] ?? 0.0, color: .blue)
+//                    distanceData(label: "x軸_距離", value: motionManager.distance["x"] ?? 0.0, color: .red)
+//                    distanceData(label: "y軸_距離", value: motionManager.distance["y"] ?? 0.0, color: .green)
+//                    distanceData(label: "z軸_距離", value: motionManager.distance["z"] ?? 0.0, color: .blue)
                 }
+                
                 Group {
-                    Text("実空間データ").font(.headline)
-                    accData(label: "x軸", value: motionManager.globalData["x"] ?? 0.0, color: .red)
-                    accData(label: "y軸", value: motionManager.globalData["y"] ?? 0.0, color: .green)
-                    accData(label: "z軸", value: motionManager.globalData["z"] ?? 0.0, color: .blue)
-                    velocityData(label: "x軸_速度", value: motionManager.corrected_velocity["x"] ?? 0.0, color: .red)
-                    velocityData(label: "y軸_速度", value: motionManager.corrected_velocity["y"] ?? 0.0, color: .green)
-                    velocityData(label: "z軸_速度", value: motionManager.corrected_velocity["z"] ?? 0.0, color: .blue)
-                    distanceData(label: "x軸_距離", value: motionManager.corrected_distance["x"] ?? 0.0, color: .red)
-                    distanceData(label: "y軸_距離", value: motionManager.corrected_distance["y"] ?? 0.0, color: .green)
-                    distanceData(label: "z軸_距離", value: motionManager.corrected_distance["z"] ?? 0.0, color: .blue)
-                }
-
-                Group {
-                    Text("線形加速度").font(.headline)
-                    accData(label: "x軸", value: motionManager.userAccelerationData["x"] ?? 0.0, color: .red)
-                    accData(label: "y軸", value: motionManager.userAccelerationData["y"] ?? 0.0, color: .green)
-                    accData(label: "z軸", value: motionManager.userAccelerationData["z"] ?? 0.0, color: .blue)
-                    velocityData(label: "x軸_速度", value: motionManager.userVelocity["x"] ?? 0.0, color: .red)
-                    velocityData(label: "y軸_速度", value: motionManager.userVelocity["y"] ?? 0.0, color: .green)
-                    velocityData(label: "z軸_速度", value: motionManager.userVelocity["z"] ?? 0.0, color: .blue)
-                    distanceData(label: "x軸_距離", value: motionManager.userDistance["x"] ?? 0.0, color: .red)
-                    distanceData(label: "y軸_距離", value: motionManager.userDistance["y"] ?? 0.0, color: .green)
-                    distanceData(label: "z軸_距離", value: motionManager.userDistance["z"] ?? 0.0, color: .blue)
+                    Text("Attitude").font(.headline)
+                    attitudeData(label: "roll", value: motionManager.attitude["x"] ?? 0.0, color: .red)
+                    attitudeData(label: "pitch", value: motionManager.attitude["y"] ?? 0.0, color: .green)
+                    attitudeData(label: "yaw", value: motionManager.attitude["z"] ?? 0.0, color: .blue)
                 }
                 
                 Group {
                     Text("重力加速度").font(.headline)
-                    accData(label: "x軸", value: motionManager.gravityData["x"] ?? 0.0, color: .red)
-                    accData(label: "y軸", value: motionManager.gravityData["y"] ?? 0.0, color: .green)
-                    accData(label: "z軸", value: motionManager.gravityData["z"] ?? 0.0, color: .blue)
+                    accData(label: "x軸", value: motionManager.gravity["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.gravity["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.gravity["z"] ?? 0.0, color: .blue)
+                }
+                
+                Group {
+                    Text("グローバルデータ").font(.headline)
+                    accData(label: "x軸", value: motionManager.globalData["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.globalData["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.globalData["z"] ?? 0.0, color: .blue)
+//                    velocityData(label: "x軸_速度", value: motionManager.corrected_velocity["x"] ?? 0.0, color: .red)
+//                    velocityData(label: "y軸_速度", value: motionManager.corrected_velocity["y"] ?? 0.0, color: .green)
+//                    velocityData(label: "z軸_速度", value: motionManager.corrected_velocity["z"] ?? 0.0, color: .blue)
+//                    distanceData(label: "x軸_距離", value: motionManager.corrected_distance["x"] ?? 0.0, color: .red)
+//                    distanceData(label: "y軸_距離", value: motionManager.corrected_distance["y"] ?? 0.0, color: .green)
+//                    distanceData(label: "z軸_距離", value: motionManager.corrected_distance["z"] ?? 0.0, color: .blue)
                 }
                 Group {
-                    Text("ジャイロ").font(.headline)
-                    gyroData(label: "roll", value: motionManager.gyroData["x"] ?? 0.0, color: .red)
-                    gyroData(label: "pitch", value: motionManager.gyroData["y"] ?? 0.0, color: .green)
-                    gyroData(label: "yaw", value: motionManager.gyroData["z"] ?? 0.0, color: .blue)
+                    Text("線形加速度").font(.headline)
+                    accData(label: "x軸", value: motionManager.liner["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.liner["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.liner["z"] ?? 0.0, color: .blue)
                 }
                 Group {
-                    Text("磁場").font(.headline)
-                    magneticFieldData(label: "x軸", value: motionManager.magneticFieldData["x"] ?? 0.0, color: .red)
-                    magneticFieldData(label: "y軸", value: motionManager.magneticFieldData["y"] ?? 0.0, color: .green)
-                    magneticFieldData(label: "z軸", value: motionManager.magneticFieldData["z"] ?? 0.0, color: .blue)
+                    Text("線形加速度 - グローバルデータ").font(.headline)
+                    accData(label: "x軸", value: motionManager.diff["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.diff["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.diff["z"] ?? 0.0, color: .blue)
                 }
                 Group {
-                    Text("線形加速度 - (実空間データ-重力加速度)").font(.headline)
-                    accData(label: "x軸", value: motionManager.differenceData["x"] ?? 0.0, color: .red)
-                    accData(label: "y軸", value: motionManager.differenceData["y"] ?? 0.0, color: .green)
-                    accData(label: "z軸", value: motionManager.differenceData["z"] ?? 0.0, color: .blue)
+                    Text("グローバルデータ").font(.headline)
+                    accData(label: "x軸", value: motionManager.average["x"] ?? 0.0, color: .red)
+                    accData(label: "y軸", value: motionManager.average["y"] ?? 0.0, color: .green)
+                    accData(label: "z軸", value: motionManager.average["z"] ?? 0.0, color: .blue)
                 }
+                Group {
+                    Text("速度").font(.headline)
+                    velocityData(label: "x軸", value: motionManager.velocity["x"] ?? 0.0, color: .red)
+                    velocityData(label: "y軸", value: motionManager.velocity["y"] ?? 0.0, color: .green)
+                    velocityData(label: "z軸", value: motionManager.velocity["z"] ?? 0.0, color: .blue)
+                }
+                Group {
+                    Text("距離").font(.headline)
+                    distanceData(label: "x軸", value: motionManager.distance["x"] ?? 0.0, color: .red)
+                    distanceData(label: "y軸", value: motionManager.distance["y"] ?? 0.0, color: .green)
+                    distanceData(label: "z軸", value: motionManager.distance["z"] ?? 0.0, color: .blue)
+                }
+                
 
-                Group {
-                    Text("GPS").font(.headline)
-                    gpsData(label: "緯度", value: gpsManager.latitude, color: .red)
-                    gpsData(label: "経度", value: gpsManager.longitude, color: .green)
-                    gpsData(label: "高度", value: gpsManager.altitude, color: .blue)
-                }
-                Group {
-                    Text("地磁気").font(.headline)
-                    magneticFieldData(label: "x軸", value: gpsManager.geomagneticData["x"] ?? 0.0, color: .red)
-                    magneticFieldData(label: "y軸", value: gpsManager.geomagneticData["y"] ?? 0.0, color: .green)
-                    magneticFieldData(label: "z軸", value: gpsManager.geomagneticData["z"] ?? 0.0, color: .blue)
-                    headingData(label: "方位", value: gpsManager.heading, color: .black)
-                }
             }
 
             Spacer()
@@ -109,21 +104,28 @@ struct ContentView: View {
                     saveLogs.startLogging(mode: .timerBased) {
                         (
                             motionManager.rawAccelerometerData,
+                            motionManager.attitude,
+                            motionManager.gravity,
+//                            motionManager.velocity,
+//                            motionManager.distance,
+//                            motionManager.globalData,
+                            motionManager.average,
+                            motionManager.liner,
+                            motionManager.diff,
                             motionManager.velocity,
-                            motionManager.distance,
-                            motionManager.globalData,
-                            motionManager.corrected_velocity,
-                            motionManager.corrected_distance,
-                            motionManager.userAccelerationData,
-                            motionManager.userVelocity,
-                            motionManager.userDistance,
-                            motionManager.gravityData,
-                            motionManager.gyroData,
-                            motionManager.magneticFieldData,
-                            motionManager.differenceData,
-                            [gpsManager.latitude, gpsManager.longitude, gpsManager.altitude],
-                            gpsManager.geomagneticData,
-                            gpsManager.heading
+                            motionManager.distance
+//                            motionManager.corrected_velocity,
+//                            motionManager.corrected_distance,
+//                            motionManager.userAccelerationData,
+//                            motionManager.userVelocity,
+//                            motionManager.userDistance,
+//                            motionManager.gravityData,
+//                            motionManager.gyroData,
+//                            motionManager.magneticFieldData,
+//                            motionManager.differenceData,
+//                            [gpsManager.latitude, gpsManager.longitude, gpsManager.altitude],
+//                            gpsManager.geomagneticData,
+//                            gpsManager.heading
                         )
                     }
                 } else {
@@ -161,28 +163,28 @@ struct ContentView: View {
             Text(label)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(color)
-            Text(String(format: "%.2f m/s²", value))
+            Text(String(format: "%.5f m/s²", value))
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
-    private func velocityData(label: String, value: Double, color: Color) -> some View {
-        HStack {
-            Text(label)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(color)
-            Text(String(format: "%.2f km/h", value))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-        }
-    }
-    private func distanceData(label: String, value: Double, color: Color) -> some View {
-        HStack {
-            Text(label)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(color)
-            Text(String(format: "%.2f km", value))
-                .frame(maxWidth: .infinity, alignment: .trailing)
-        }
-    }
+//    private func velocityData(label: String, value: Double, color: Color) -> some View {
+//        HStack {
+//            Text(label)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .foregroundColor(color)
+//            Text(String(format: "%.2f km/h", value))
+//                .frame(maxWidth: .infinity, alignment: .trailing)
+//        }
+//    }
+//    private func distanceData(label: String, value: Double, color: Color) -> some View {
+//        HStack {
+//            Text(label)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .foregroundColor(color)
+//            Text(String(format: "%.2f km", value))
+//                .frame(maxWidth: .infinity, alignment: .trailing)
+//        }
+//    }
 
     private func gpsData(label: String, value: Double, color: Color) -> some View {
         HStack {
@@ -203,6 +205,15 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
+    private func attitudeData(label: String, value: Double, color: Color) -> some View {
+        HStack {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(color)
+            Text(String(format: "%.2f rad", value))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
 
     private func magneticFieldData(label: String, value: Double, color: Color) -> some View {
         HStack {
@@ -220,6 +231,26 @@ struct ContentView: View {
                 .foregroundColor(color)
                 .font(.headline)
             Text(String(format: "%.2f °", value))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+    private func velocityData(label: String, value: Double, color: Color) -> some View {
+        HStack {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(color)
+                .font(.headline)
+            Text(String(format: "%.5f km/h", value))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+    private func distanceData(label: String, value: Double, color: Color) -> some View {
+        HStack {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(color)
+                .font(.headline)
+            Text(String(format: "%.5f km", value))
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
