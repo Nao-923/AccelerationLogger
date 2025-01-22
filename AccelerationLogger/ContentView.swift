@@ -20,12 +20,24 @@ struct ContentView: View {
                     accData(label: "x軸", value: motionManager.accelerationData["x"] ?? 0.0, color: .red)
                     accData(label: "y軸", value: motionManager.accelerationData["y"] ?? 0.0, color: .green)
                     accData(label: "z軸", value: motionManager.accelerationData["z"] ?? 0.0, color: .blue)
+                    velocityData(label: "x軸_速度", value: motionManager.velocity["x"] ?? 0.0, color: .red)
+                    velocityData(label: "y軸_速度", value: motionManager.velocity["y"] ?? 0.0, color: .green)
+                    velocityData(label: "z軸_速度", value: motionManager.velocity["z"] ?? 0.0, color: .blue)
+                    distanceData(label: "x軸_距離", value: motionManager.distance["x"] ?? 0.0, color: .red)
+                    distanceData(label: "y軸_距離", value: motionManager.distance["y"] ?? 0.0, color: .green)
+                    distanceData(label: "z軸_距離", value: motionManager.distance["z"] ?? 0.0, color: .blue)
                 }
                 Group {
                     Text("実空間データ").font(.headline)
                     accData(label: "x軸", value: motionManager.globalData["x"] ?? 0.0, color: .red)
                     accData(label: "y軸", value: motionManager.globalData["y"] ?? 0.0, color: .green)
                     accData(label: "z軸", value: motionManager.globalData["z"] ?? 0.0, color: .blue)
+                    velocityData(label: "x軸_速度", value: motionManager.corrected_velocity["x"] ?? 0.0, color: .red)
+                    velocityData(label: "y軸_速度", value: motionManager.corrected_velocity["y"] ?? 0.0, color: .green)
+                    velocityData(label: "z軸_速度", value: motionManager.corrected_velocity["z"] ?? 0.0, color: .blue)
+                    distanceData(label: "x軸_距離", value: motionManager.corrected_distance["x"] ?? 0.0, color: .red)
+                    distanceData(label: "y軸_距離", value: motionManager.corrected_distance["y"] ?? 0.0, color: .green)
+                    distanceData(label: "z軸_距離", value: motionManager.corrected_distance["z"] ?? 0.0, color: .blue)
                 }
 
                 Group {
@@ -33,7 +45,14 @@ struct ContentView: View {
                     accData(label: "x軸", value: motionManager.userAccelerationData["x"] ?? 0.0, color: .red)
                     accData(label: "y軸", value: motionManager.userAccelerationData["y"] ?? 0.0, color: .green)
                     accData(label: "z軸", value: motionManager.userAccelerationData["z"] ?? 0.0, color: .blue)
+                    velocityData(label: "x軸_速度", value: motionManager.userVelocity["x"] ?? 0.0, color: .red)
+                    velocityData(label: "y軸_速度", value: motionManager.userVelocity["y"] ?? 0.0, color: .green)
+                    velocityData(label: "z軸_速度", value: motionManager.userVelocity["z"] ?? 0.0, color: .blue)
+                    distanceData(label: "x軸_距離", value: motionManager.userDistance["x"] ?? 0.0, color: .red)
+                    distanceData(label: "y軸_距離", value: motionManager.userDistance["y"] ?? 0.0, color: .green)
+                    distanceData(label: "z軸_距離", value: motionManager.userDistance["z"] ?? 0.0, color: .blue)
                 }
+                
                 Group {
                     Text("重力加速度").font(.headline)
                     accData(label: "x軸", value: motionManager.gravityData["x"] ?? 0.0, color: .red)
@@ -90,8 +109,14 @@ struct ContentView: View {
                     saveLogs.startLogging(mode: .timerBased) {
                         (
                             motionManager.rawAccelerometerData,
+                            motionManager.velocity,
+                            motionManager.distance,
                             motionManager.globalData,
+                            motionManager.corrected_velocity,
+                            motionManager.corrected_distance,
                             motionManager.userAccelerationData,
+                            motionManager.userVelocity,
+                            motionManager.userDistance,
                             motionManager.gravityData,
                             motionManager.gyroData,
                             motionManager.magneticFieldData,
@@ -137,6 +162,24 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(color)
             Text(String(format: "%.2f m/s²", value))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+    private func velocityData(label: String, value: Double, color: Color) -> some View {
+        HStack {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(color)
+            Text(String(format: "%.2f km/h", value))
+                .frame(maxWidth: .infinity, alignment: .trailing)
+        }
+    }
+    private func distanceData(label: String, value: Double, color: Color) -> some View {
+        HStack {
+            Text(label)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(color)
+            Text(String(format: "%.2f km", value))
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }

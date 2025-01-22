@@ -13,7 +13,13 @@ class MotionManager: ObservableObject {
     @Published var gyroData: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
     @Published var magneticFieldData: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
     @Published var differenceData: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
-
+    @Published var velocity: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    @Published var distance: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    @Published var corrected_velocity: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    @Published var corrected_distance: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    @Published var userVelocity: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    @Published var userDistance: [String: Double] = ["x": 0.0, "y": 0.0, "z": 0.0]
+    
     private let gToMetersPerSecondSquared = 9.80665
     private var isRunning = false
 
@@ -36,6 +42,12 @@ class MotionManager: ObservableObject {
                     self.updateGyroData(from: motion)
                     self.updateMagneticFieldData(from: motion)
                     self.calculateDifferenceData()
+                    self.calculateVelocity()
+                    self.calculateDistance()
+                    self.calculateGlobalVelocity()
+                    self.calculateGlobalDistance()
+                    self.calculateUserVelocity()
+                    self.calculateUserDistance()
                 }
             }
         }
@@ -132,7 +144,61 @@ class MotionManager: ObservableObject {
             "z": userAccelerationData["z"]! - linearAcceleration["z"]!
         ]
     }
+    private func calculateVelocity() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
 
+        self.velocity = [
+            "x": velocity["x"]! + (abs(rawAccelerometerData["x"]!) < 0.1 ? 0.0 : rawAccelerometerData["x"]!) * dt * 3.6,
+            "y": velocity["y"]! + (abs(rawAccelerometerData["y"]!) < 0.1 ? 0.0 : rawAccelerometerData["y"]!) * dt * 3.6,
+            "z": velocity["z"]! + (abs(rawAccelerometerData["z"]!) < 0.1 ? 0.0 : rawAccelerometerData["z"]!) * dt * 3.6
+        ]
+    }
+
+    private func calculateDistance() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
+        self.distance = [
+            "x": distance["x"]! + velocity["x"]! * dt / 1000,
+            "y": distance["y"]! + velocity["y"]! * dt / 1000,
+            "z": distance["z"]! + velocity["z"]! * dt / 1000
+        ]
+    }
+    private func calculateGlobalVelocity() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
+        self.corrected_velocity = [
+            "x": corrected_velocity["x"]! + (abs(globalData["x"]!) < 0.1 ? 0.0 : globalData["x"]!) * dt * 3.6,
+            "y": corrected_velocity["y"]! + (abs(globalData["y"]!) < 0.1 ? 0.0 : globalData["y"]!) * dt * 3.6,
+            "z": corrected_velocity["z"]! + (abs(globalData["z"]!) < 0.1 ? 0.0 : globalData["z"]!) * dt * 3.6
+        ]
+    }
+
+    private func calculateGlobalDistance() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
+        self.corrected_distance = [
+            "x": corrected_distance["x"]! + corrected_velocity["x"]! * dt / 1000,
+            "y": corrected_distance["y"]! + corrected_velocity["y"]! * dt / 1000,
+            "z": corrected_distance["z"]! + corrected_velocity["z"]! * dt / 1000
+        ]
+    }
+    private func calculateUserVelocity() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
+        self.userVelocity = [
+            "x": userVelocity["x"]! + (abs(userAccelerationData["x"]!) < 0.02 ? 0.0 : userAccelerationData["x"]!) * dt * 3.6,
+            "y": userVelocity["y"]! + (abs(userAccelerationData["y"]!) < 0.02 ? 0.0 : userAccelerationData["y"]!) * dt * 3.6,
+            "z": userVelocity["z"]! + (abs(userAccelerationData["z"]!) < 0.02 ? 0.0 : userAccelerationData["z"]!) * dt * 3.6
+            
+        ]
+    }
+
+    private func calculateUserDistance() {
+        let dt = motionManager.deviceMotionUpdateInterval // 更新間隔
+        self.userDistance = [
+            "x": userDistance["x"]! + userVelocity["x"]! * dt / 1000,
+            "y": userDistance["y"]! + userVelocity["y"]! * dt / 1000,
+            "z": userDistance["z"]! + userVelocity["z"]! * dt / 1000
+        ]
+    }
+    
+    
     func resetData() {
         DispatchQueue.main.async {
             self.accelerationData = ["x": 0.0, "y": 0.0, "z": 0.0]
@@ -143,6 +209,12 @@ class MotionManager: ObservableObject {
             self.gyroData = ["x": 0.0, "y": 0.0, "z": 0.0]
             self.magneticFieldData = ["x": 0.0, "y": 0.0, "z": 0.0]
             self.differenceData = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.velocity = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.distance = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.corrected_velocity = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.corrected_distance = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.userVelocity = ["x": 0.0, "y": 0.0, "z": 0.0]
+            self.userDistance = ["x": 0.0, "y": 0.0, "z": 0.0]
         }
     }
 
